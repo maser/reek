@@ -47,17 +47,6 @@ module Reek
             end
           end
         end
-
-        #
-        # Lists smells without summarization
-        # Used for yaml and html reports
-        #
-        class Normal < Base
-          def gather_results
-            examiners.each_with_object([]) { |examiner, smells| smells << examiner.smells }.
-              flatten
-          end
-        end
       end
     end
   end
