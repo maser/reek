@@ -57,7 +57,7 @@ describe UncommunicativeParameterName do
 
       it 'reports used anonymous parameter' do
         expect("def #{host}help(_) basics(_) end").
-          to smell_of(UncommunicativeParameterName)
+          to reek_of(UncommunicativeParameterName)
       end
 
       it 'reports used parameters marked as unused' do

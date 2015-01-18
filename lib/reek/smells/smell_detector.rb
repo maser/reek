@@ -58,6 +58,8 @@ module Reek
         def default_smell_category
           name.split(/::/)[-1]
         end
+
+        alias_method :class_without_namespace, :default_smell_category
       end
 
       attr_reader :smells_found   # SMELL: only published for tests

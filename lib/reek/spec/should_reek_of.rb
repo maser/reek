@@ -8,7 +8,7 @@ module Reek
     #
     class ShouldReekOf        # :nodoc:
       def initialize(klass, patterns)
-        @klass = klass
+        @klass = klass.class_without_namespace # In case we get a Reek::Smells::...
         @patterns = patterns
       end
 

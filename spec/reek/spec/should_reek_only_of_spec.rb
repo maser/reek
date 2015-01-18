@@ -3,10 +3,11 @@ require 'reek/spec'
 
 include Reek
 include Reek::Spec
+include Reek::Smells
 
 describe ShouldReekOnlyOf do
   before :each do
-    @expected_smell_type = :NestedIterators
+    @expected_smell_type = NestedIterators
     @expected_context_name = 'SmellyClass#big_method'
     @matcher = ShouldReekOnlyOf.new(@expected_smell_type, [/#{@expected_context_name}/])
     @examiner = double('examiner').as_null_object
