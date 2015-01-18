@@ -40,10 +40,11 @@ module Reek
       end
 
       def reporter
-        @reporter ||= @report_class.new(warning_formatter: @warning_formatter.new(@location_formatter),
-                                        report_formatter: Report::Formatter,
-                                        sort_by_issue_count: @sort_by_issue_count,
-                                        heading_formatter: @heading_formatter)
+        @reporter ||=
+          @report_class.new(warning_formatter: @warning_formatter.new(@location_formatter),
+                            report_formatter: Report::Formatter,
+                            sort_by_issue_count: @sort_by_issue_count,
+                            heading_formatter: @heading_formatter)
       end
 
       def program_name
