@@ -121,7 +121,7 @@ Feature: Correctly formatted reports
       | -V -q         |
       | -V --quiet    |
 
-  Scenario Outline: --line-number turns off line numbers
+  Scenario Outline: --no-line-numbers turns off line numbers
     When I run reek <option> spec/samples/standard_smelly/dirty.rb
     Then the exit status indicates smells
     And it reports:
@@ -136,11 +136,30 @@ Feature: Correctly formatted reports
       """
 
     Examples:
-      | option            |
-      | -n                |
-      | --no-line-numbers |
-      | -n -V             |
-      | -V -n             |
+      | option               |
+      | --no-line-numbers    |
+      | --no-line-numbers -V |
+      | -V --no-line-numbers |
+
+  Scenario Outline: --line-numbers turns on line numbers
+    When I run reek <option> spec/samples/standard_smelly/dirty.rb
+    Then the exit status indicates smells
+    And it reports:
+      """
+      spec/samples/standard_smelly/dirty.rb -- 6 warnings:
+        [5]:Dirty has the variable name '@s' (UncommunicativeVariableName)
+        [4, 6]:Dirty#a calls @s.title 2 times (DuplicateMethodCall)
+        [4, 6]:Dirty#a calls puts(@s.title) 2 times (DuplicateMethodCall)
+        [5]:Dirty#a contains iterators nested 2 deep (NestedIterators)
+        [3]:Dirty#a has the name 'a' (UncommunicativeMethodName)
+        [5]:Dirty#a has the variable name 'x' (UncommunicativeVariableName)
+      """
+
+    Examples:
+      | option                           |
+      | --line-numbers                   |
+      | --no-line-numbers --line-numbers |
+      | --no-line-numbers -n             |
 
   Scenario Outline: --single-line shows filename and one line number
     When I run reek <option> spec/samples/standard_smelly/dirty.rb

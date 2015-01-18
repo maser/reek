@@ -43,8 +43,7 @@ Feature: Reek can be controlled using command-line options
           -q, --quiet                      Suppress headings for smell-free source files (this is the default)
           -V, --no-quiet, --verbose        Show headings for smell-free source files
           -U, --ultra-verbose              Be as explanatory as possible
-          -n, --no-line-numbers            Suppress line numbers from the output
-              --line-numbers               Show line numbers in the output (this is the default)
+          -n, --[no-]line-numbers          Show line numbers in the output (this is the default)
           -s, --single-line                Show IDE-compatible single-line-per-warning
           -S, --sort-by-issue-count        Sort by "issue-count", listing the "smelliest" files first
           -y, --yaml                       Report smells in YAML format

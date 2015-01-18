@@ -79,11 +79,12 @@ module Reek
         @parser.on('-U', '--ultra-verbose', 'Be as explanatory as possible') do |_opt|
           @warning_formatter = Report::UltraVerboseWarningFormattter
         end
-        @parser.on('-n', '--no-line-numbers', 'Suppress line numbers from the output') do
-          @warning_formatter = Report::SimpleWarningFormatter
-        end
-        @parser.on('--line-numbers', 'Show line numbers in the output (this is the default)') do
-          @warning_formatter = Report::WarningFormatterWithLineNumbers
+        @parser.on('-n', '--[no-]line-numbers', 'Show line numbers in the output (this is the default)') do |opt|
+          if opt
+            @warning_formatter = Report::WarningFormatterWithLineNumbers
+          else
+            @warning_formatter = Report::SimpleWarningFormatter
+          end
         end
         @parser.on('-s', '--single-line', 'Show IDE-compatible single-line-per-warning') do
           @warning_formatter = Report::SingleLineWarningFormatter
