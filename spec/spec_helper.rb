@@ -1,4 +1,3 @@
-require 'stringio'
 require 'reek/spec'
 require 'reek/source/ast_node_class_map'
 
@@ -20,14 +19,6 @@ module Helpers
     Configuration::AppConfiguration.load_from_file(path)
     yield if block_given?
     Configuration::AppConfiguration.reset
-  end
-
-  def capture_output_stream
-    $stdout = StringIO.new
-    yield
-    $stdout.string
-  ensure
-    $stdout = STDOUT
   end
 
   # :reek:UncommunicativeMethodName

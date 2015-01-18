@@ -17,8 +17,7 @@ describe Report::YamlReport do
     end
 
     it 'prints empty yaml' do
-      result = capture_output_stream { instance.show }
-      expect(result).to match(/^--- \[\]\n.*$/)
+      expect { instance.show }.to output(/^--- \[\]\n.*$/).to_stdout
     end
   end
 end
