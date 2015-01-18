@@ -27,8 +27,7 @@ module Reek
         end
 
         def smells
-          @examiners.each_with_object([]) { |examiner, smells| smells << examiner.smells }.
-            flatten
+          @examiners.map(&:smells).flatten
         end
       end
 
