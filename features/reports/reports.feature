@@ -76,7 +76,7 @@ Feature: Correctly formatted reports
       | -S                    |
       | --sort-by-issue-count |
 
-  Scenario Outline: good files show no headers by default
+  Scenario Outline: good files show no headings by default
     When I run reek <args>
     Then it succeeds
     And it reports:
@@ -90,7 +90,7 @@ Feature: Correctly formatted reports
       | spec/samples/three_clean_files/*.rb |
       | spec/samples/three_clean_files      |
 
-  Scenario Outline: --verbose turns on headers for fragrant files
+  Scenario Outline: --empty-headings turns on headings for fragrant files
     When I run reek <option> spec/samples/three_clean_files/*.rb
     Then it succeeds
     And it reports:
@@ -102,11 +102,11 @@ Feature: Correctly formatted reports
       """
 
     Examples:
-      | option     |
-      | --verbose  |
-      | -V         |
+      | option            |
+      | --empty-headings  |
+      | -V                |
 
-  Scenario Outline: --quiet turns off headers for fragrant files
+  Scenario Outline: --no-empty-headings turns off headings for fragrant files
     When I run reek <option> spec/samples/three_clean_files/*.rb
     Then it succeeds
     And it reports:
@@ -116,9 +116,9 @@ Feature: Correctly formatted reports
     """
 
     Examples:
-      | option        |
-      | -V -q         |
-      | -V --quiet    |
+      | option                 |
+      | --no-empty-headings    |
+      | -V --no-empty-headings |
 
   Scenario Outline: --no-line-numbers turns off line numbers
     When I run reek <option> spec/samples/standard_smelly/dirty.rb

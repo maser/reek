@@ -40,8 +40,7 @@ Feature: Reek can be controlled using command-line options
 
       Report formatting:
           -o, --[no-]color                 Use colors for the output (this is the default)
-          -q, --quiet                      Suppress headings for smell-free source files (this is the default)
-          -V, --verbose                    Show headings for smell-free source files
+          -V, --[no-]empty-headings        Show headings for smell-free source files
           -U, --ultra-verbose              Be as explanatory as possible
           -n, --[no-]line-numbers          Show line numbers in the output (this is the default)
           -S, --sort-by-issue-count        Sort by "issue-count", listing the "smelliest" files first
