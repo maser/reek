@@ -86,11 +86,11 @@ module Reek
             @warning_formatter = Report::SimpleWarningFormatter
           end
         end
-        @parser.on('-s', '--single-line', 'Show IDE-compatible single-line-per-warning') do
-          @warning_formatter = Report::SingleLineWarningFormatter
-        end
         @parser.on('-S', '--sort-by-issue-count', 'Sort by "issue-count", listing the "smelliest" files first') do
           @sort_by_issue_count = true
+        end
+        @parser.on('-s', '--single-line', 'Report smells in editor-compatible single-line-per-warning format') do
+          @warning_formatter = Report::SingleLineWarningFormatter
         end
         @parser.on('-y', '--yaml', 'Report smells in YAML format') do
           @report_class = Report::YamlReport
