@@ -46,7 +46,7 @@ module Reek
       end
 
       def program_name
-        @parser.program_name
+        @program_name ||= @parser.program_name
       end
 
       def help_text
@@ -56,15 +56,14 @@ module Reek
       private
 
       def banner
-        progname = @parser.program_name
         <<-EOB.gsub(/^[ ]+/, '')
-          Usage: #{progname} [options] [files]
+          Usage: #{program_name} [options] [files]
 
           Examples:
 
-          #{progname} lib/*.rb
-          #{progname} -q lib
-          cat my_class.rb | #{progname}
+          #{program_name} lib/*.rb
+          #{program_name} -q lib
+          cat my_class.rb | #{program_name}
 
           See http://wiki.github.com/troessner/reek for detailed help.
 
