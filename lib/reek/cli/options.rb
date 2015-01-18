@@ -2,7 +2,7 @@ require 'optparse'
 require 'rainbow'
 require 'reek/cli/report/report'
 require 'reek/cli/report/formatter'
-require 'reek/cli/report/strategy'
+require 'reek/cli/report/heading_formatter'
 require 'reek/cli/reek_command'
 require 'reek/cli/help_command'
 require 'reek/cli/version_command'
@@ -23,7 +23,7 @@ module Reek
         @parser              = OptionParser.new
         @colored             = true
         @report_class        = Report::TextReport
-        @strategy            = Report::Strategy::Quiet
+        @heading_formatter   = Report::HeadingFormatter::Quiet
         @warning_formatter   = Report::WarningFormatterWithLineNumbers
         @command_class       = ReekCommand
         @config_file         = nil
@@ -42,7 +42,7 @@ module Reek
         @reporter ||= @report_class.new(warning_formatter: @warning_formatter,
                                         report_formatter: Report::Formatter,
                                         sort_by_issue_count: @sort_by_issue_count,
-                                        strategy: @strategy)
+                                        heading_formatter: @heading_formatter)
       end
 
       def program_name
@@ -105,11 +105,11 @@ module Reek
         end
         @parser.on('-V', '--[no-]empty-headings',
                    'Show headings for smell-free source files') do |opt|
-          @strategy = if opt
-                        Report::Strategy::Verbose
-                      else
-                        Report::Strategy::Quiet
-                      end
+          @heading_formatter = if opt
+                                 Report::HeadingFormatter::Verbose
+                               else
+                                 Report::HeadingFormatter::Quiet
+                               end
         end
 
         @parser.on('-U', '--ultra-verbose', 'Be as explanatory as possible') do

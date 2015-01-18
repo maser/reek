@@ -37,9 +37,9 @@ module Reek
       class TextReport < Base
         def initialize(options = {})
           super options
+          @options = options
           @warning_formatter   = options.fetch :warning_formatter, SimpleWarningFormatter
           @report_formatter    = options.fetch :report_formatter, Formatter
-          @strategy            = options.fetch :strategy, Strategy::Quiet
           @sort_by_issue_count = options.fetch :sort_by_issue_count, false
         end
 
@@ -68,7 +68,7 @@ module Reek
         end
 
         def summarize_single_examiner(examiner)
-          result = strategy.header(examiner)
+          result = heading_formatter.header(examiner)
           if examiner.smelly?
             formatted_list = @report_formatter.format_list(examiner.smells,
                                                            @warning_formatter)
@@ -87,9 +87,9 @@ module Reek
           Rainbow("#{@total_smell_count} total warning#{s}\n").color(colour)
         end
 
-        def strategy
-          @strategy_instance ||=
-            @strategy.new(@report_formatter, @warning_formatter, @examiners)
+        def heading_formatter
+          @heading_formatter ||=
+            @options.fetch(:heading_formatter, HeadingFormatter::Quiet).new(@report_formatter)
         end
       end
 

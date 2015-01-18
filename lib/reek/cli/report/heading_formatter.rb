@@ -1,18 +1,16 @@
 module Reek
   module Cli
     module Report
-      module Strategy
+      module HeadingFormatter
         #
-        # Base class for report startegies.
-        # Each gathers results according to strategy chosen
+        # Base class for heading formatters.
+        # Is responsible for formatting the heading emitted for each examiner
         #
         class Base
-          attr_reader :report_formatter, :warning_formatter, :examiners
+          attr_reader :report_formatter
 
-          def initialize(report_formatter, warning_formatter, examiners)
+          def initialize(report_formatter)
             @report_formatter = report_formatter
-            @warning_formatter = warning_formatter
-            @examiners = examiners
           end
 
           def header(examiner)

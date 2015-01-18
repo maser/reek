@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'reek/examiner'
 require 'reek/cli/report/report'
 require 'reek/cli/report/formatter'
-require 'reek/cli/report/strategy'
 require 'rainbow'
 require 'stringio'
 
@@ -21,7 +20,7 @@ def report_options
   {
     warning_formatter: Report::SimpleWarningFormatter,
     report_formatter: Report::Formatter,
-    strategy: Report::Strategy::Quiet
+    heading_formatter: Report::HeadingFormatter::Quiet
   }
 end
 
@@ -80,7 +79,7 @@ describe Report::TextReport, ' when empty' do
         @result = @rpt.add_examiner(@examiner).smells.first
       end
 
-      it 'has a header' do
+      it 'has a heading' do
         expect(@result).to match('string -- 2 warnings')
       end
 
