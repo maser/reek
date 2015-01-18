@@ -20,8 +20,8 @@ module Reek
       end
 
       class SimpleWarningFormatter
-        def initialize
-          @location_formatter = BlankLocationFormatter
+        def initialize(location_formatter = BlankLocationFormatter)
+          @location_formatter = location_formatter
         end
 
         def format(warning)
@@ -35,19 +35,7 @@ module Reek
         end
       end
 
-      class WarningFormatterWithLineNumbers < SimpleWarningFormatter
-        def initialize
-          @location_formatter = DefaultLocationFormatter
-        end
-      end
-
-      class SingleLineWarningFormatter
-        def initialize
-          @location_formatter = SingleLineLocationFormatter
-        end
-      end
-
-      class UltraVerboseWarningFormattter < WarningFormatterWithLineNumbers
+      class UltraVerboseWarningFormatter < SimpleWarningFormatter
         BASE_URL_FOR_HELP_LINK = 'https://github.com/troessner/reek/wiki/'
 
         def format(warning)

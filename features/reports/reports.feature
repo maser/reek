@@ -223,3 +223,19 @@ Feature: Correctly formatted reports
       | option           |
       | -U               |
       | --ultra-verbose  |
+
+  Scenario Outline: --ultra-verbose is independent of --line-numbers
+    When I run reek <option> spec/samples/one_smelly_file/dirty.rb
+    Then the exit status indicates smells
+    And it reports:
+      """
+      spec/samples/one_smelly_file/dirty.rb -- 3 warnings:
+        D has no descriptive comment (IrresponsibleModule) [https://github.com/troessner/reek/wiki/Irresponsible-Module]
+        D has the name 'D' (UncommunicativeModuleName) [https://github.com/troessner/reek/wiki/Uncommunicative-Module-Name]
+        D#a has the name 'a' (UncommunicativeMethodName) [https://github.com/troessner/reek/wiki/Uncommunicative-Method-Name]
+      """
+
+    Examples:
+      | option                             |
+      | --no-line-numbers -U               |
+      | --no-line-numbers --ultra-verbose  |
