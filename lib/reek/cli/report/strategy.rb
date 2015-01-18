@@ -22,22 +22,6 @@ module Reek
               ''
             end
           end
-
-          def summarize_single_examiner(examiner)
-            result = header(examiner)
-            if examiner.smelly?
-              formatted_list = report_formatter.format_list(examiner.smells,
-                                                            warning_formatter)
-              result += ":\n#{formatted_list}"
-            end
-            result
-          end
-
-          def gather_results
-            examiners.each_with_object([]) do |examiner, result|
-              result << summarize_single_examiner(examiner)
-            end
-          end
         end
 
         #

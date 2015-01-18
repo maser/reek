@@ -39,7 +39,7 @@ module Reek
           super options
           @warning_formatter   = options.fetch :warning_formatter, SimpleWarningFormatter
           @report_formatter    = options.fetch :report_formatter, Formatter
-          @strategy = options.fetch(:strategy, Strategy::Quiet)
+          @strategy            = options.fetch :strategy, Strategy::Quiet
           @sort_by_issue_count = options.fetch :sort_by_issue_count, false
         end
 
@@ -50,7 +50,9 @@ module Reek
         end
 
         def smells
-          @strategy.new(@report_formatter, @warning_formatter, @examiners).gather_results
+          @examiners.each_with_object([]) do |examiner, result|
+            result << summarize_single_examiner(examiner)
+          end
         end
 
         private
@@ -65,6 +67,16 @@ module Reek
           print total_smell_count_message
         end
 
+        def summarize_single_examiner(examiner)
+          result = strategy.header(examiner)
+          if examiner.smelly?
+            formatted_list = @report_formatter.format_list(examiner.smells,
+                                                           @warning_formatter)
+            result += ":\n#{formatted_list}"
+          end
+          result
+        end
+
         def sort_examiners
           @examiners.sort_by!(&:smells_count).reverse! if @sort_by_issue_count
         end
@@ -73,6 +85,11 @@ module Reek
           colour = smells? ? WARNINGS_COLOR : NO_WARNINGS_COLOR
           s = @total_smell_count == 1 ? '' : 's'
           Rainbow("#{@total_smell_count} total warning#{s}\n").color(colour)
+        end
+
+        def strategy
+          @strategy_instance ||=
+            @strategy.new(@report_formatter, @warning_formatter, @examiners)
         end
       end
 
