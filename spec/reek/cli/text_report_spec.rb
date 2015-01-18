@@ -11,7 +11,7 @@ include Reek::Cli
 describe Report::TextReport do
   let(:report_options) do
     {
-      warning_formatter: Report::SimpleWarningFormatter,
+      warning_formatter: Report::SimpleWarningFormatter.new,
       report_formatter: Report::Formatter,
       heading_formatter: Report::HeadingFormatter::Quiet
     }

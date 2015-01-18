@@ -24,7 +24,7 @@ module Reek
         @colored             = true
         @report_class        = Report::TextReport
         @heading_formatter   = Report::HeadingFormatter::Quiet
-        @warning_formatter   = Report::WarningFormatterWithLineNumbers
+        @warning_formatter   = Report::WarningFormatterWithLineNumbers.new
         @command_class       = ReekCommand
         @config_file         = nil
         @sort_by_issue_count = false
@@ -113,15 +113,15 @@ module Reek
         end
 
         @parser.on('-U', '--ultra-verbose', 'Be as explanatory as possible') do
-          @warning_formatter = Report::UltraVerboseWarningFormattter
+          @warning_formatter = Report::UltraVerboseWarningFormattter.new
         end
 
         @parser.on('-n', '--[no-]line-numbers',
                    'Show line numbers in the output (this is the default)') do |opt|
           if opt
-            @warning_formatter = Report::WarningFormatterWithLineNumbers
+            @warning_formatter = Report::WarningFormatterWithLineNumbers.new
           else
-            @warning_formatter = Report::SimpleWarningFormatter
+            @warning_formatter = Report::SimpleWarningFormatter.new
           end
         end
         @parser.on('-S', '--sort-by-issue-count',
@@ -135,7 +135,7 @@ module Reek
       def set_alternative_formatter_options
         @parser.on('-s', '--single-line',
                    'Report smells in editor-compatible single-line-per-warning format') do
-          @warning_formatter = Report::SingleLineWarningFormatter
+          @warning_formatter = Report::SingleLineWarningFormatter.new
         end
         @parser.on('-y', '--yaml', 'Report smells in YAML format') do
           @report_class = Report::YamlReport

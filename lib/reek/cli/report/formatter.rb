@@ -1,8 +1,10 @@
+require 'reek/cli/report/location_formatter'
+
 module Reek
   module Cli
     module Report
       module Formatter
-        def self.format_list(warnings, formatter = SimpleWarningFormatter)
+        def self.format_list(warnings, formatter = SimpleWarningFormatter.new)
           warnings.map do |warning|
             "  #{formatter.format warning}"
           end.join("\n")
@@ -17,13 +19,39 @@ module Reek
         end
       end
 
-      module UltraVerboseWarningFormattter
-        BASE_URL_FOR_HELP_LINK = 'https://github.com/troessner/reek/wiki/'
-
-        module_function
+      class SimpleWarningFormatter
+        def initialize
+          @location_formatter = BlankLocationFormatter
+        end
 
         def format(warning)
-          "#{WarningFormatterWithLineNumbers.format(warning)} " \
+          "#{@location_formatter.format(warning)}#{base_format(warning)}"
+        end
+
+        private
+
+        def base_format(warning)
+          "#{warning.context} #{warning.message} (#{warning.smell_type})"
+        end
+      end
+
+      class WarningFormatterWithLineNumbers < SimpleWarningFormatter
+        def initialize
+          @location_formatter = DefaultLocationFormatter
+        end
+      end
+
+      class SingleLineWarningFormatter
+        def initialize
+          @location_formatter = SingleLineLocationFormatter
+        end
+      end
+
+      class UltraVerboseWarningFormattter < WarningFormatterWithLineNumbers
+        BASE_URL_FOR_HELP_LINK = 'https://github.com/troessner/reek/wiki/'
+
+        def format(warning)
+          "#{super} " \
           "[#{explanatory_link(warning)}]"
         end
 
@@ -33,25 +61,6 @@ module Reek
 
         def class_name_to_param(name)
           name.split(/(?=[A-Z])/).join('-')
-        end
-      end
-
-      module SimpleWarningFormatter
-        def self.format(warning)
-          "#{warning.context} #{warning.message} (#{warning.smell_type})"
-        end
-      end
-
-      module WarningFormatterWithLineNumbers
-        def self.format(warning)
-          "#{warning.lines.inspect}:#{SimpleWarningFormatter.format(warning)}"
-        end
-      end
-
-      module SingleLineWarningFormatter
-        def self.format(warning)
-          "#{warning.source}:#{warning.lines.first}: " \
-          "#{SimpleWarningFormatter.format(warning)}"
         end
       end
     end

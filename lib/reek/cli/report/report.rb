@@ -38,7 +38,7 @@ module Reek
         def initialize(options = {})
           super options
           @options = options
-          @warning_formatter   = options.fetch :warning_formatter, SimpleWarningFormatter
+          @warning_formatter   = options.fetch :warning_formatter, SimpleWarningFormatter.new
           @report_formatter    = options.fetch :report_formatter, Formatter
           @sort_by_issue_count = options.fetch :sort_by_issue_count, false
         end
