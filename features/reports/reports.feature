@@ -90,7 +90,7 @@ Feature: Correctly formatted reports
       | spec/samples/three_clean_files/*.rb |
       | spec/samples/three_clean_files      |
 
-  Scenario Outline: --verbose and --no-quiet turn on headers for fragrant files
+  Scenario Outline: --verbose turns on headers for fragrant files
     When I run reek <option> spec/samples/three_clean_files/*.rb
     Then it succeeds
     And it reports:
@@ -105,7 +105,6 @@ Feature: Correctly formatted reports
       | option     |
       | --verbose  |
       | -V         |
-      | --no-quiet |
 
   Scenario Outline: --quiet turns off headers for fragrant files
     When I run reek <option> spec/samples/three_clean_files/*.rb

@@ -70,13 +70,13 @@ module Reek
         @parser.on('-o', '--[no-]color', 'Use colors for the output (this is the default)') do |opt|
           @colored = opt
         end
-        @parser.on('-q', '--quiet', 'Suppress headings for smell-free source files (this is the default)') do |_opt|
+        @parser.on('-q', '--quiet', 'Suppress headings for smell-free source files (this is the default)') do
           @strategy = Report::Strategy::Quiet
         end
-        @parser.on('-V', '--no-quiet', '--verbose', 'Show headings for smell-free source files') do |_opt|
+        @parser.on('-V', '--verbose', 'Show headings for smell-free source files') do
           @strategy = Report::Strategy::Verbose
         end
-        @parser.on('-U', '--ultra-verbose', 'Be as explanatory as possible') do |_opt|
+        @parser.on('-U', '--ultra-verbose', 'Be as explanatory as possible') do
           @warning_formatter = Report::UltraVerboseWarningFormattter
         end
         @parser.on('-n', '--[no-]line-numbers', 'Show line numbers in the output (this is the default)') do |opt|
