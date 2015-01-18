@@ -14,7 +14,7 @@ module Reek
     # Parses the command line
     #
     class Options
-      include CLI::Input
+      include Cli::Input
 
       attr_reader :config_file, :smells_to_detect
 
