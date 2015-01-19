@@ -17,8 +17,6 @@ module Reek
     class Options
       include Cli::Input
 
-      attr_reader :config_file, :smells_to_detect
-
       def initialize(argv)
         @argv    = argv
         @parser  = OptionParser.new
@@ -40,7 +38,7 @@ module Reek
       def parse
         @parser.parse!(@argv)
         Rainbow.enabled = @options.colored
-        @command_class.new(self)
+        @options.command_class.new(self)
       end
 
       def reporter
@@ -58,6 +56,14 @@ module Reek
 
       def help_text
         @parser.to_s
+      end
+
+      def smells_to_detect
+        @options.smells_to_detect
+      end
+
+      def config_file
+        @options.config_file
       end
 
       private
