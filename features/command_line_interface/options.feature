@@ -43,7 +43,7 @@ Feature: Reek can be controlled using command-line options
       Text format options:
               --[no-]color                 Use colors for the output (this is the default)
           -V, --[no-]empty-headings        Show headings for smell-free source files
-          -U, --wiki-links                 Show link to related Reek wiki page for each smell
+          -U, --[no-]wiki-links            Show link to related Reek wiki page for each smell
           -n, --[no-]line-numbers          Show line numbers in the output (this is the default)
           -s, --single-line                Show location in editor-compatible single-line-per-smell format
               --sort SORTING               Choose a sorting method

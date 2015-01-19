@@ -107,26 +107,42 @@ module Reek
 
       def set_report_formatting_options
         @parser.separator "\nText format options:"
+        set_up_color_option
+        set_up_verbosity_options
+        set_up_location_formatting_options
+        set_up_sorting_option
+      end
+
+      def set_up_color_option
         @parser.on('--[no-]color', 'Use colors for the output (this is the default)') do |opt|
           @options.colored = opt
         end
+      end
+
+      def set_up_verbosity_options
         @parser.on('-V', '--[no-]empty-headings',
-                   'Show headings for smell-free source files') do |opt|
-          @options.heading_formatter = if opt
+                   'Show headings for smell-free source files') do |show_empty|
+          @options.heading_formatter = if show_empty
                                          Report::HeadingFormatter::Verbose
                                        else
                                          Report::HeadingFormatter::Quiet
                                        end
         end
 
-        @parser.on('-U', '--wiki-links',
-                   'Show link to related Reek wiki page for each smell') do
-          @options.warning_formatter = Report::UltraVerboseWarningFormatter
+        @parser.on('-U', '--[no-]wiki-links',
+                   'Show link to related Reek wiki page for each smell') do |show_links|
+          @options.warning_formatter = if show_links
+                                         Report::UltraVerboseWarningFormatter
+                                       else
+                                         Report::SimpleWarningFormatter
+                                       end
         end
+      end
 
+      def set_up_location_formatting_options
         @parser.on('-n', '--[no-]line-numbers',
-                   'Show line numbers in the output (this is the default)') do |opt|
-          @options.location_formatter = if opt
+                   'Show line numbers in the output (this is the default)') do |show_numbers|
+          @options.location_formatter = if show_numbers
                                           Report::DefaultLocationFormatter
                                         else
                                           Report::BlankLocationFormatter
@@ -136,18 +152,20 @@ module Reek
                    'Show location in editor-compatible single-line-per-smell format') do
           @options.location_formatter = Report::SingleLineLocationFormatter
         end
+      end
 
+      def set_up_sorting_option
         @parser.on('--sort SORTING',
                    'Choose a sorting method',
                    '  [i]ssue-count ("smelliest" files first)',
-                   '  [n]one (default - output in processing order)') do |opt|
-          @options.sort_by_issue_count = case opt
-                                         when /^i/
-                                           true
-                                         else
-                                           false
-                                         end
-        end
+                   '  [n]one (default - output in processing order)') do |sorting|
+                     @options.sort_by_issue_count = case sorting
+                                                    when /^i/
+                                                      true
+                                                    else
+                                                      false
+                                                    end
+                   end
       end
 
       def set_alternative_formatter_options
