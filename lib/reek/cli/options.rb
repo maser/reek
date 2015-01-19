@@ -74,13 +74,14 @@ module Reek
 
       def set_options
         @parser.banner = banner
-        set_common_options
         set_configuration_options
+        set_alternative_formatter_options
         set_report_formatting_options
+        set_utility_options
       end
 
-      def set_common_options
-        @parser.separator 'Common options:'
+      def set_utility_options
+        @parser.separator "\nUtility options:"
         @parser.on('-h', '--help', 'Show this message') do
           @command_class = HelpCommand
         end
@@ -90,7 +91,7 @@ module Reek
       end
 
       def set_configuration_options
-        @parser.separator "\nConfiguration:"
+        @parser.separator 'Configuration:'
         @parser.on('-c', '--config FILE', 'Read configuration options from FILE') do |file|
           @config_file = file
         end
@@ -100,9 +101,8 @@ module Reek
       end
 
       def set_report_formatting_options
-        @parser.separator "\nReport formatting:"
-        @parser.on('-o', '--[no-]color',
-                   'Use colors for the output (this is the default)') do |opt|
+        @parser.separator "\nText format options:"
+        @parser.on('--[no-]color', 'Use colors for the output (this is the default)') do |opt|
           @colored = opt
         end
         @parser.on('-V', '--[no-]empty-headings',
@@ -114,7 +114,8 @@ module Reek
                                end
         end
 
-        @parser.on('-U', '--ultra-verbose', 'Be as explanatory as possible') do
+        @parser.on('-U', '--wiki-links',
+                   'Show link to related Reek wiki page for each smell') do
           @warning_formatter = Report::UltraVerboseWarningFormatter
         end
 
@@ -126,25 +127,40 @@ module Reek
             @location_formatter = Report::BlankLocationFormatter
           end
         end
-
-        @parser.on('-S', '--sort-by-issue-count',
-                   'Sort by "issue-count", listing the "smelliest" files first') do
-          @sort_by_issue_count = true
+        @parser.on('-s', '--single-line',
+                   'Show location in editor-compatible single-line-per-smell format') do
+          @location_formatter = Report::SingleLineLocationFormatter
         end
 
-        set_alternative_formatter_options
+        @parser.on('--sort SORTING',
+                   'Choose a sorting method',
+                   '  [i]ssue-count ("smelliest" files first)',
+                   '  [n]one (default - output in processing order)') do |opt|
+          @sort_by_issue_count = case opt
+                                 when /^i/
+                                   true
+                                 else
+                                   false
+                                 end
+        end
       end
 
       def set_alternative_formatter_options
-        @parser.on('-s', '--single-line',
-                   'Report smells in editor-compatible single-line-per-warning format') do
-          @location_formatter = Report::SingleLineLocationFormatter
-        end
-        @parser.on('-y', '--yaml', 'Report smells in YAML format') do
-          @report_class = Report::YamlReport
-        end
-        @parser.on('-H', '--html', 'Report smells in HTML format') do
-          @report_class = Report::HtmlReport
+        @parser.separator "\nReport format:"
+
+        @parser.on('-f', '--format FORMAT',
+                   'Report smells in the given format',
+                   '  [t]ext (default)',
+                   '  [y]aml',
+                   '  [h]tml') do |opt|
+          @report_class = case opt
+                          when /^t/
+                            Report::TextReport
+                          when /^y/
+                            Report::YamlReport
+                          when /^h/
+                            Report::HtmlReport
+                          end
         end
       end
     end

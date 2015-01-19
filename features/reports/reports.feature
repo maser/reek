@@ -72,9 +72,9 @@ Feature: Correctly formatted reports
       """
 
     Examples:
-      | option                |
-      | -S                    |
-      | --sort-by-issue-count |
+      | option             |
+      | --sort issue-count |
+      | --sort i           |
 
   Scenario Outline: good files show no headings by default
     When I run reek <args>
@@ -208,7 +208,7 @@ Feature: Correctly formatted reports
       | spec/samples/two_smelly_files/ |
       | spec/samples/two_smelly_files  |
 
-  Scenario Outline: -U or --ultra-verbose adds helpful links to smell warnings
+  Scenario Outline: -U or --wiki-links adds helpful links to smell warnings
     When I run reek <option> spec/samples/one_smelly_file/dirty.rb
     Then the exit status indicates smells
     And it reports:
@@ -222,9 +222,9 @@ Feature: Correctly formatted reports
     Examples:
       | option           |
       | -U               |
-      | --ultra-verbose  |
+      | --wiki-links  |
 
-  Scenario Outline: --ultra-verbose is independent of --line-numbers
+  Scenario Outline: --wiki-links is independent of --line-numbers
     When I run reek <option> spec/samples/one_smelly_file/dirty.rb
     Then the exit status indicates smells
     And it reports:
@@ -238,4 +238,4 @@ Feature: Correctly formatted reports
     Examples:
       | option                             |
       | --no-line-numbers -U               |
-      | --no-line-numbers --ultra-verbose  |
+      | --no-line-numbers --wiki-links  |
