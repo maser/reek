@@ -12,7 +12,6 @@ Metrics/AbcSize:
 Metrics/ClassLength:
   Exclude:
     - lib/reek/core/code_parser.rb
-    - lib/reek/cli/options.rb
 
 # FIXME: Document these classes
 Style/Documentation:
